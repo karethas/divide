@@ -8,7 +8,7 @@ from yamf import Mock, MockModule, MockArray
 class TestDivision(unittest.TestCase):
 
   def setUp(self):
-    self.argumentsForProgram=['../codes','divide.py', 'divideTestFolder', 'output1']
+    self.argumentsForProgram=['../divide','divide.py divideTestFolder output1']
 
   def testGivingArguments(self):
     self.assertTrue(subprocess.call(self.argumentsForProgram))
