@@ -7,7 +7,7 @@ def dividingFolder(commands):
 
 
 def errorHandle():
-  if commands<1:
+  if len(commands)=<1:
     print 'usage: /divide.py sourcefolder outputfolder'
     sys.exit(1)
 
