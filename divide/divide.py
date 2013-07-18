@@ -1,14 +1,15 @@
 import os, sys, shutil, errno
 
-def dividingFolder():
-  os.mkdir(sys.argv)
+commands=sys.argv[1:]
+def dividingFolder(commands):
+  os.mkdir(commands[1])
   
 
 
-def main():
-  if sys.argv:
-    print 'usage: ./divide.py sourcefolder outputfolder'
+def errorHandle():
+  if commands<1:
+    print 'usage: /divide.py sourcefolder outputfolder'
     sys.exit(1)
 
-if __name__ == '__main__':
-  main()
+if __name__ == '__errorHandle__':
+  errorHandle()
