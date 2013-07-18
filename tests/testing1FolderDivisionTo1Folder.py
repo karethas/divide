@@ -11,7 +11,7 @@ class TestDivision(unittest.TestCase):
     self.argumentsForProgram=['../codes','divide.py', 'divideTestFolder', 'output1']
 
   def testGivingArguments(self):
-    self.assert subprocess.call(self.argumentsForProgram)
+    self.assertTrue(subprocess.call(self.argumentsForProgram))
     self.assertEquals(os.listdir(output1), ['testFile1.txt', 'testFile2.txt'])
 
 if __name__=='__main__':
