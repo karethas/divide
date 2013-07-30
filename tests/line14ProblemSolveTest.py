@@ -12,7 +12,7 @@ output1='D:\users\Karethas_2\Documents\GitHub\divide\divide\output1'
 class TestDivision(unittest.TestCase):
 
   def setUp(self):
-    self.argumentsForProgram='divide1.py divideTestFolder output1'
+    self.argumentsForProgram='divide.py divideTestFolder output1'
 
   def testGivingArguments(self):
     os.system(self.argumentsForProgram)
