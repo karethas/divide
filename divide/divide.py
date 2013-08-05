@@ -10,9 +10,4 @@ for command in commands:
   elif command > commands[0]:
 	commandholder.append(command)
 	os.mkdir(''.join(commandholder))
-  for partFile in DirectoryContent:
-    fullFile = os.path.join(commands[0], partFile)
-    if (os.path.isfile(fullFile)):
-      shutil.copy(fileName, ''.join(commandholder))
-    commandholder.remove(command)
-	print "Division complete."
+	print os.path.getsize(commandholder)/len(commandholder)
