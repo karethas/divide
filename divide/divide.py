@@ -3,9 +3,7 @@ import os, sys, shutil, errno
 sourceFolder=sys.argv[1]
 outputFolders=sys.argv[2:]
 sourceContent=os.listdir(sourceFolder)
-outputContent=os.listdir(outputFolders)
 
-print ''.join(outputFolders)
 def createOutputFolders(outputFolders):
   rotator=0
   yksinimikerrallaan=[]
@@ -14,28 +12,36 @@ def createOutputFolders(outputFolders):
     os.mkdir(''.join(yksinimikerrallaan)) 
     yksinimikerrallaan.remove(outputFolders[rotator])
     rotator+=1
+  return 
+createOutputFolders(outputFolders)
   
 def getSourceFolderContentSize():
   contentSize=0
   for content in sourceContent:
     contentSize+=os.path.getsize(sourceFolder+'/'+content)
   return contentSize
-
-def getOutputFolderContentSize():
-  contentSize=0
-  for content in outputContent:
-    contentSize+=os.path.getsize(outputContent+'/'+content)
   
-def divideFilesToFolders(sourceFolder, getSourceFolderContentSize):
+def getOutputFolderContentSize():
+  outputSize=0
+  outputContent=os.listdir(outputFolders)
+  container=[]
+  for content in outputFolders:
+        container.append(content)
+	outputSize+=os.path.getsize(container+'/'+content)
+	container.remove(content)	  
+  return outputSize
+
+def divideFilesToFolders(sourceFolder, outputFolders, sourceContent, getSourceFolderContentSize, getOutputFolderContentSize):
   fileIterator=0
   folderIterator=0
   sourceFolderContentSize=getSourceFolderContentSize()
-  while os.path.getsize(''.join(outputFolders[folderIterator]))<sourceFolderContentSize/len(outputFolders):
-    shutil.copy(sourceFolder+'/'+sourceContent[fileIterator],''.join(outputFolders[folderIterator]))
-    fileIterator+=1
-  else:
+  outputFolderContentSize=getOutputFolderContentSize()
+  while folderIterator<len(outputFolders):
+        shutil.copy(sourceFolder+'/'+sourceContent[fileIterator],''.join(outputFolders[folderIterator]))
+	fileIterator+=1
 	folderIterator+=1
-	
-createOutputFolders(outputFolders)
-getSourceFolderContentSize()
-divideFilesToFolders(sourceFolder, getSourceFolderContentSize)
+	print outputFolderContentSize
+  if outputFolderContentSize>=sourceFolderContentSize/len(outputFolders):
+	  print 'life is perfect'  
+
+divideFilesToFolders(sourceFolder, outputFolders, sourceContent, getSourceFolderContentSize, getOutputFolderContentSize)
