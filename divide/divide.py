@@ -17,14 +17,18 @@ def getSourceFolderContentSize():
 def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize):
   sourceFolderContentSize=getSourceFolderContentSize()
   limitToOutputFolderContentSize=sourceFolderContentSize/len(outputFolders)
+  sizeOfOutputFolder=0
   print limitToOutputFolderContentSize
-  while not len(outputFolders)==0:
-    if os.path.getsize(outputFolders[0])<limitToOutputFolderContentSize:
-      for content in sourceFolderContent:
-        shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[0], content))
-    """if os.path.getsize(outputFolders[0])>=limitToOutputFolderContentSize:
-      outputFolders.pop(0)
-      print outputFolders"""
+  for content in sourceFolderContent:
+    shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[0], content))
+    sizeOfOutputFolder+=os.path.getsize(os.path.join(outputFolders[0],content)) 
+    if sizeOfOutputFolder>=limitToOutputFolderContentSize:
+	  outputFolders.append(outputFolders[0])
+	  outputFolders.pop(0)
+	  
+"""^^^Is moving the existing folder from beginning to end and then removing the one at the beginning.
+This was a necessary modification to avoid a failure with more files and different sizes"""
+
 	
 createOutputFolders()
 getSourceFolderContentSize()
