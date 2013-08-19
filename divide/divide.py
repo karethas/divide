@@ -6,7 +6,7 @@ sourceFolderContent=os.listdir(sourceFolder)
 
 def createOutputFolders():
   for outputFolder in outputFolders:
-    os.mkdir(''.join(outputFolder)) 
+    os.mkdir(outputFolder) 
   
 def getSourceFolderContentSize():
   contentSize=0
@@ -18,17 +18,15 @@ def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSo
   sourceFolderContentSize=getSourceFolderContentSize()
   limitToOutputFolderContentSize=sourceFolderContentSize/len(outputFolders)
   sizeOfOutputFolder=0
+  usedFolders=[]
   print limitToOutputFolderContentSize
   for content in sourceFolderContent:
-    shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[0], content))
-    sizeOfOutputFolder+=os.path.getsize(os.path.join(outputFolders[0],content)) 
+    shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[outputFolderChanger], content))
+    sizeOfOutputFolder+=os.path.getsize(os.path.join(outputFolders[outputFolderChanger],content)) 
     if sizeOfOutputFolder>=limitToOutputFolderContentSize:
-	  outputFolders.append(outputFolders[0])
-	  outputFolders.pop(0)
-	  
-"""^^^Is moving the existing folder from beginning to end and then removing the one at the beginning.
-This was a necessary modification to avoid a failure with more files and different sizes"""
-
+      usedFolders.append(outputFolders[])
+	for folders in usedFolders:
+	  continue
 	
 createOutputFolders()
 getSourceFolderContentSize()
