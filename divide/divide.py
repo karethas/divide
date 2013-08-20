@@ -25,9 +25,13 @@ def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSo
     sizeOfOutputFolder+=os.path.getsize(os.path.join(outputFolders[outputFolderChanger],content)) 
     if sizeOfOutputFolder>=limitToOutputFolderContentSize:
       usedFolders.append(outputFolders[])
-	for folders in usedFolders:
-	  continue
-	
+	if folder in usedFolders:
+	  print "temporary no message until the utility for this is corrected."
+	if outputFolders == outputfolders[-1]:
+	  sizeList=[]
+	  os.path.getsize(usedFolders[0])
+	  
+
 createOutputFolders()
 getSourceFolderContentSize()
 divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize)
