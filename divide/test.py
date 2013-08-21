@@ -14,23 +14,36 @@ def getSourceFolderContentSize():
     contentSize+=os.path.getsize(os.path.join(sourceFolder,content))
   return contentSize
 
+def getOutputFolderSize():
+  contentSize=0
+  for folder in outputFolders[0]:
+    for content in folder:
+	contentSize+=os.path.getsize(os.path.join(outputFolders[0],content))
+  return contentSize
+
+def folderSwapper(usedFolders):
+  usedFolders.append(outputFolders[0])
+  outputFolders.pop(0)
+  print usedFolders
+  if outputFolders == []:
+	outputFolders.append(usedFolders[0])
+
   
-def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize):
+def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, getOutputFolderSize, folderSwapper):
+  usedFolders=[]
   sourceFolderContentSize=getSourceFolderContentSize()
   limitToOutputFolderContentSize=sourceFolderContentSize/len(outputFolders)
-  sizeOfOutputFolder=0
-  usedFolders=[]
-  usedFolderSizes={}
+  swapFolder=folderSwapper(usedFolders)
+  outputFolderSize=getOutputFolderSize()
   print limitToOutputFolderContentSize
   for content in sourceFolderContent:
     shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[0], content))
-    sizeOfOutputFolder+=os.path.getsize(os.path.join(outputFolders[0],content)) 
-    if sizeOfOutputFolder>=limitToOutputFolderContentSize:
-	  usedFolders.append(outputFolders[0])
-	  outputFolders.pop(0)
-	  if outputFolders == []:
-	    outputFolders.append(usedFolders[0])
+    outputFolderSize
+    print outputFolderSize
+    if outputFolderSize>=limitToOutputFolderContentSize:
+      swapFolder
+	
 
 createOutputFolders()
 getSourceFolderContentSize()
-divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize)
+divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, getOutputFolderSize, folderSwapper)
