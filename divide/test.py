@@ -1,12 +1,12 @@
-import os, sys, shutil, errno
-
+import os, sys, shutil, errno, distutils.core
 sourceFolder=sys.argv[1]
 outputFolders=sys.argv[2:]
 sourceFolderContent=os.listdir(sourceFolder)
 
 def createOutputFolders():
   for outputFolder in outputFolders:
-    os.mkdir(outputFolder) 
+    if os.path.exists(outputFolder)!=True:
+      os.mkdir(outputFolder)
   
 def getSourceFolderContentSize():
   contentSize=0
@@ -14,35 +14,27 @@ def getSourceFolderContentSize():
     contentSize+=os.path.getsize(os.path.join(sourceFolder,content))
   return contentSize
 
-def getOutputFolderSize(outputFolders):
-  contentSize=0
-  for content in outputFolders[0]:
-    contentSize+=os.path.getsize(os.path.join(outputFolders[0],content))
-  return contentSize
-
 def folderSwapper(outputFolders,usedFolders):
   usedFolders.append(outputFolders[0])
   outputFolders.pop(0)
-  print usedFolders
   if outputFolders == []:
 	outputFolders.append(usedFolders[0])
 
   
-def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, getOutputFolderSize, folderSwapper):
+def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, folderSwapper):
+  contentSize=0
+  usedFolderContentSize=0
   usedFolders=[]
-  sourceFolderContentSize=getSourceFolderContentSize()
-  limitToOutputFolderContentSize=sourceFolderContentSize/len(outputFolders)
-  swapFolder=folderSwapper(outputFolders, usedFolders)
-  outputFolderSize=getOutputFolderSize(outputFolders)
+  limitToOutputFolderContentSize=getSourceFolderContentSize()/len(outputFolders)
   print limitToOutputFolderContentSize
   for content in sourceFolderContent:
-    shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[0], content))
-    outputFolderSize
-    print outputFolderSize
-    if outputFolderSize>=limitToOutputFolderContentSize:
-      swapFolder
-	
+    try:
+      shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[0], content))
+      contentSize+=os.path.getsize(os.path.join(outputFolders[0],content))
+      if contentSize>=limitToOutputFolderContentSize:
+	    folderSwapper(outputFolders,usedFolders)
+    except IOError:  distutils.dir_util.copy_tree(os.path.join(sourceFolder,content),outputFolders[0])
 
 createOutputFolders()
 getSourceFolderContentSize()
-divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, getOutputFolderSize, folderSwapper)
+divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, folderSwapper)
