@@ -20,21 +20,34 @@ def folderSwapper(outputFolders,usedFolders):
   if outputFolders == []:
 	outputFolders.append(usedFolders[0])
 
-  
+def oneFileOneFolder(outputFolders,sourceFolderContent):
+  for content in sourceFolderContent:
+    try:
+      shutil.copy(os.path.join(sourceFolder,content), os.path.join(outputFolders[0],content))
+      outputFolders.pop(0)
+    except IOError:  distutils.dir_util.copy_tree(os.path.join(sourceFolder,content),outputFolders[0])
+
+def starterFunction(oneFileOneFolder, divideFilesToFolders):
+  print len(outputFolders) == len(sourceFolderContent)
+  if len(outputFolders) == len(sourceFolderContent):
+    print "Dividing One File To Each Folder"
+    oneFileOneFolder(outputFolders,sourceFolderContent)
+  elif len(outputFolders) != len(sourceFolderContent):
+      print "Dividing Files To Folders"
+      divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, folderSwapper)
+	  
 def divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, folderSwapper):
   contentSize=0
   usedFolderContentSize=0
   usedFolders=[]
   limitToOutputFolderContentSize=getSourceFolderContentSize()/len(outputFolders)
-  print limitToOutputFolderContentSize
   for content in sourceFolderContent:
     try:
       shutil.copy(os.path.join(sourceFolder,content),os.path.join(outputFolders[0], content))
       contentSize+=os.path.getsize(os.path.join(outputFolders[0],content))
       if contentSize>=limitToOutputFolderContentSize:
-	    folderSwapper(outputFolders,usedFolders)
+        folderSwapper(outputFolders,usedFolders)
     except IOError:  distutils.dir_util.copy_tree(os.path.join(sourceFolder,content),outputFolders[0])
 
 createOutputFolders()
-getSourceFolderContentSize()
-divideFilesToFolders(sourceFolder, outputFolders, sourceFolderContent, getSourceFolderContentSize, folderSwapper)
+starterFunction(oneFileOneFolder,divideFilesToFolders)
